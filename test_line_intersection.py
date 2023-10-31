@@ -77,7 +77,7 @@ for i in range(line_count):
 		line_b = line_list[j]
 		point = get_intersection_point(*line_a, *line_b)
 		if point != None:
-			stamp_intersection_point(point, True)
+			stamp_intersection_point(point)
 
 turtle.penup()
 turtle.goto(0, 400)
