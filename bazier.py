@@ -76,11 +76,40 @@ def bazier_curve_2d(control_point_list, step):
 		t += step
 	return point_list
 
+def bazier_curve_3d(control_point_list, step):
+	if step >= 1.0 or step <= 0.0:
+		raise ValueError(f'function bazier_curve_1d: step value error, step value is: {step}\n \
+			step value must be (0.0, 1.0)')
+
+	t = 0.0
+	point_list = []
+
+	p0 = control_point_list[0]
+	p1 = control_point_list[1]
+	p2 = control_point_list[2]
+	p3 = control_point_list[3]
+	p4 = control_point_list[4]
+
+	running = True
+	while running:
+		if t > 1.0:
+			t = 1.0
+			running = False
+
+		p04 = [0, 0]
+		p04[0] = pow((1 - t), 4) * p0[0] + 4 * t * pow((1 - t), 3) * p1[0] + 6 * pow(t, 2) * pow((1 - t), 2) * p2[0] \
+			+ 4 * pow(t, 3) * (1 - t) * p3[0] + pow(t, 4) * p4[0]
+		p04[1] = pow((1 - t), 4) * p0[1] + 4 * t * pow((1 - t), 3) * p1[1] + 6 * pow(t, 2) * pow((1 - t), 2) * p2[1] \
+			+ 4 * pow(t, 3) * (1 - t) * p3[1] + pow(t, 4) * p4[1]
+		point_list.append(p04)
+
+		t += step
+	return point_list
 
 
 def get_bazier_curve(control_point_list, step):
 	length_array = len(control_point_list)
-	if length_array < 3 or length_array > 4:
+	if length_array < 3 or length_array > 5:
 		return None
 
 	point_list = None
@@ -89,12 +118,14 @@ def get_bazier_curve(control_point_list, step):
 			point_list = bazier_curve_1d(control_point_list, step)
 		case 4:
 			point_list = bazier_curve_2d(control_point_list, step)
+		case 5:
+			point_list = bazier_curve_3d(control_point_list, step)
 
 	return point_list
 
 
 
-control_point_list = get_random_control_point(4, (-400, 400), (-300, 300))
+control_point_list = get_random_control_point(5, (-400, 400), (-300, 300))
 
 for i in range(len(control_point_list) - 1):
 	draw_line_turtle(control_point_list[i], control_point_list[i + 1])
