@@ -34,9 +34,12 @@ def bazier_curve_1d(control_point_list, step):
 	p0 = control_point_list[0]
 	p1 = control_point_list[1]
 	p2 = control_point_list[2]
-	while True:
+
+	running = True
+	while running:
 		if t > 1.0:
-			break
+			t = 1.0
+			running = False
 
 		p02 = [0, 0]
 		p02[0] = pow((1 - t), 2) * p0[0] + 2 * t * (1 - t) * p1[0] + pow(t, 2) * p2[0]
@@ -46,12 +49,59 @@ def bazier_curve_1d(control_point_list, step):
 		t += step
 	return point_list
 
-control_point_list = get_random_control_point(3, (-100, 100), (-100, 100))
+def bazier_curve_2d(control_point_list, step):
+	if step >= 1.0 or step <= 0.0:
+		raise ValueError(f'function bazier_curve_1d: step value error, step value is: {step}\n \
+			step value must be (0.0, 1.0)')
+
+	t = 0.0
+	point_list = []
+
+	p0 = control_point_list[0]
+	p1 = control_point_list[1]
+	p2 = control_point_list[2]
+	p3 = control_point_list[3]
+
+	running = True
+	while running:
+		if t > 1.0:
+			t = 1.0
+			running = False
+
+		p03 = [0, 0]
+		p03[0] = pow((1 - t), 3) * p0[0] + 3 * t * pow((1 - t), 2) * p1[0] + 3 * pow(t, 2) * (1 - t) * p2[0] + pow(t, 3) * p3[0]
+		p03[1] = pow((1 - t), 3) * p0[1] + 3 * t * pow((1 - t), 2) * p1[1] + 3 * pow(t, 2) * (1 - t) * p2[0] + pow(t, 3) * p3[1]
+		point_list.append(p03)
+
+		t += step
+	return point_list
+
+
+
+def get_bazier_curve(control_point_list, step):
+	length_array = len(control_point_list)
+	if length_array < 3 or length_array > 4:
+		return None
+
+	point_list = None
+	match length_array:
+		case 3:
+			point_list = bazier_curve_1d(control_point_list, step)
+		case 4:
+			point_list = bazier_curve_2d(control_point_list, step)
+
+	return point_list
+
+
+
+control_point_list = get_random_control_point(4, (-400, 400), (-300, 300))
 
 for i in range(len(control_point_list) - 1):
 	draw_line_turtle(control_point_list[i], control_point_list[i + 1])
 
-bazier_point_list = bazier_curve_1d(control_point_list, 0.5)
+bazier_point_list = get_bazier_curve(control_point_list, 0.05)
+
+turtle.color('blue')
 for i in range(len(bazier_point_list) - 1):
 	draw_line_turtle(bazier_point_list[i], bazier_point_list[i + 1], False, False)
 
