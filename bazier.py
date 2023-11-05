@@ -3,6 +3,8 @@ import random
 import turtle
 import math
 
+random.seed(100)
+
 screen = turtle.Screen()
 w, h = 1600, 800
 
@@ -11,7 +13,8 @@ h -= 50
 point_minmax = ((-w // 2, w // 2), (-h // 2, h // 2))
 
 # 터틀 모듈을 사용해서 라인 그리기, 시점 종점에 좌표값을 찍음
-def draw_line_turtle(start, end, print_point = True, draw_stamp = True):
+def draw_line_turtle(start, end, speed = 1, print_point = True, draw_stamp = True):
+	turtle.speed(speed)
 	turtle.penup()
 	turtle.goto(*start)
 	if draw_stamp:
@@ -168,12 +171,12 @@ def get_bazier_curve(control_point_list, step):
 control_point_list = get_random_control_point(6, point_minmax[0], point_minmax[1])
 
 for i in range(len(control_point_list) - 1):
-	draw_line_turtle(control_point_list[i], control_point_list[i + 1])
+	draw_line_turtle(control_point_list[i], control_point_list[i + 1], 10)
 
-bazier_point_list = get_bazier_curve(control_point_list, 0.01)
+bazier_point_list = get_bazier_curve(control_point_list, 1.0 / 20.0)
 
 turtle.color('blue')
 for i in range(len(bazier_point_list) - 1):
-	draw_line_turtle(bazier_point_list[i], bazier_point_list[i + 1], False, False)
+	draw_line_turtle(bazier_point_list[i], bazier_point_list[i + 1], 10, False, False)
 
 turtle.exitonclick()
