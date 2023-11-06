@@ -3,7 +3,7 @@ import random
 import turtle
 import math
 
-random.seed(100)
+random.seed('bazier curve file_')
 
 screen = turtle.Screen()
 w, h = 1600, 800
@@ -116,7 +116,7 @@ def bazier_curve_3d(control_point_list, step):
 		t += step
 	return point_list
 
-def bazier_curve_3d(control_point_list, step):
+def bazier_curve_4d(control_point_list, step):
 	if step >= 1.0 or step <= 0.0:
 		raise ValueError(f'function bazier_curve_1d: step value error, step value is: {step}\n \
 			step value must be (0.0, 1.0)')
@@ -162,13 +162,22 @@ def get_bazier_curve(control_point_list, step):
 		case 5:
 			point_list = bazier_curve_3d(control_point_list, step)
 		case 6:
-			point_list = bazier_curve_3d(control_point_list, step)
+			point_list = bazier_curve_4d(control_point_list, step)
 
 	return point_list
 
 
+turtle.penup()
+turtle.goto(-100, h // 2 - 50)
+turtle.color('black')
+turtle.write('control point: black')
+turtle.color('blue')
+turtle.goto(0, h // 2 -50)
+turtle.write('bazier curve: blue')
+turtle.color('black')
 
-control_point_list = get_random_control_point(6, point_minmax[0], point_minmax[1])
+
+control_point_list = get_random_control_point(4, point_minmax[0], point_minmax[1])
 
 for i in range(len(control_point_list) - 1):
 	draw_line_turtle(control_point_list[i], control_point_list[i + 1], 10)
