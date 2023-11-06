@@ -84,10 +84,17 @@ def draw_circle_bresenham(center_point, radius):
 		p1 = 2 * cy^2 + 2 * cy * (r + 1) + 2 * cx^2 + 4 * cx + 3 - 2 * r
 	else:
 		p1 = 3 - 2 * r
+		
+	turtle.speed(10)
 
 	turtle.penup()
 	turtle.shape('circle')
 	turtle.shapesize(0.1)
+
+	turtle.goto(cx, cy)
+	turtle.stamp()
+	turtle.goto(cx-(5 * (len('center point') // 2)), cy)
+	turtle.write(f'center point ({cx}, {cy})')
 
 	p = p1
 	x, y = x1, y1
@@ -110,15 +117,14 @@ def draw_circle_bresenham(center_point, radius):
 		quater_point_list.append([x, y])
 
 	quater_point_list += list(map(swap, *zip(*quater_point_list)))
-	turtle.speed(10)
 	circle_points = [quater_point_list, list(map(lambda x, y: (x, -y), *zip(*quater_point_list))),
 		list(map(lambda x, y: (-x, y), *zip(*quater_point_list))), list(map(lambda x, y: (-x, -y), *zip(*quater_point_list)))]
 	for points in circle_points:
 		for point in points:
 			count += 1
-			turtle.goto(write_x, write_y)
-			turtle.write(f'x{count}: {point[0]}, y{count}: {point[1]}')
-			write_y -= 15
+			# turtle.goto(write_x, write_y)
+			# turtle.write(f'x{count}: {point[0]}, y{count}: {point[1]}')
+			# write_y -= 15
 			turtle.goto(*point)
 			turtle.stamp()
 
