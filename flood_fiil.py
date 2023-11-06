@@ -1,9 +1,12 @@
 import turtle
 import bresenham_algorithm_circle
+import sys
 
 bgcolor = 0xffffff
 black = 0x000000
 fill_color = 0x0000ff # blue
+
+sys.setrecursionlimit(100000) # 재귀 함수 한도를 설정 # 다른 곳에선 사용 X
 
 def floor_fill(target_point):
 	tx, ty = target_point[0], target_point[1]
