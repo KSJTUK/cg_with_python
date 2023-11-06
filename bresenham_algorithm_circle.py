@@ -70,4 +70,61 @@ turtle.write('elif 0 <= p(k) then')
 turtle.goto(next_write_x + 10, HALF_H - 255)
 turtle.write('next point (x(k+1), y(k+1)) is (x(k) + 1, y(k)-1), p(k+1) = p(k) + 4*(x(k) - y(k)) + 10')
 
+def swap(a, b):
+	a, b = b, a
+	return a, b
+
+def draw_circle_bresenham(center_point, radius):
+	r = radius
+	cx, cy = center_point[0], center_point[1]
+	x1, y1 = cx, cy + r
+
+	if cy != 0:
+		# 2 * cy^2 - 2 * cy * (r + 1)   + 2 * cx^2 + 4 * cx + 3 - 2 * r
+		p1 = 2 * cy^2 + 2 * cy * (r + 1) + 2 * cx^2 + 4 * cx + 3 - 2 * r
+	else:
+		p1 = 3 - 2 * r
+
+	turtle.penup()
+	turtle.shape('circle')
+	turtle.shapesize(0.1)
+
+	p = p1
+	x, y = x1, y1
+
+	count = 1
+	write_x = -HALF_W + 50
+	write_y = HALF_H - 50
+
+	quater_point_list = [(x1, y1)]
+	while x < y:
+		if p < 0:
+			x = x + 1
+			y = y
+			p = p + 4 * x + 6
+		elif p >= 0:
+			x = x + 1
+			y = y - 1
+			p = p + 4 * (x - y) + 10
+
+		quater_point_list.append([x, y])
+
+	quater_point_list += list(map(swap, *zip(*quater_point_list)))
+	turtle.speed(10)
+	circle_points = [quater_point_list, list(map(lambda x, y: (x, -y), *zip(*quater_point_list))),
+		list(map(lambda x, y: (-x, y), *zip(*quater_point_list))), list(map(lambda x, y: (-x, -y), *zip(*quater_point_list)))]
+	for points in circle_points:
+		for point in points:
+			count += 1
+			turtle.goto(write_x, write_y)
+			turtle.write(f'x{count}: {point[0]}, y{count}: {point[1]}')
+			write_y -= 15
+			turtle.goto(*point)
+			turtle.stamp()
+
+			if count % 50 == 0:
+				write_x += 100
+				write_y = HALF_H - 50
+
+draw_circle_bresenham((0, 0), 90)
 turtle.exitonclick()
