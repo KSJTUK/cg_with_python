@@ -8,6 +8,11 @@ fill_color = 0x0000ff # blue
 
 sys.setrecursionlimit(100000) # 재귀 함수 한도를 설정 # 다른 곳에선 사용 X
 
+# 범람 영역 채우기
+# 처음엔 Seed 좌표를 정한다(사용자의 마우스 입력등으로 정하기 가능)
+# Seed좌표를 기준으로 픽셀을 다른 방향으로 움직여가면서 설정된 background색상과 같다면 fill_color색상으로 바꿔서 영역을 채운다
+# 구현은 재귀적으로 구현 가능하며 background색상이 아닌 픽셀을 만나면 재귀함수를 종료한다
+
 def floor_fill(target_point):
 	tx, ty = target_point[0], target_point[1]
 	if screen_rgb_map[tx][ty] == bgcolor:
